@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Use a clean sans-serif font */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+            background-color: #27bfbf; /* Light gray background */
+            color: #333; /* Dark gray text for readability */
+            display: flex; /* Use flexbox for centering */
+            flex-direction: column; /* Align items in a column */
+            align-items: center; /* Center items horizontally */
+            justify-content: center; /* Center items vertically */
+            height: 100vh; /* Full viewport height */
+            text-align: center; /* Center text */
+        }
+
+        .loading-container {
+            background-color: white; /* White background for the loading container */
+            padding: 20px; /* Inner spacing */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        }
+
+        h1 {
+            margin: 0; /* Remove margin */
+            font-size: 24px; /* Font size for the main title */
+            color: #38a169; /* Green color for the title */
+        }
+
+        p {
+            margin: 10px 0; /* Spacing around paragraph */
+            font-size: 16px; /* Font size for the text */
+            color: #555; /* Gray color for the text */
+        }
+
+        .loader {
+            border: 8px solid #f3f3f3; /* Light gray border */
+            border-top: 8px solid #3498db; /* Blue border at the top */
+            border-radius: 50%; /* Circular loader */
+            width: 50px; /* Width of the loader */
+            height: 50px; /* Height of the loader */
+            animation: spin 1s linear infinite; /* Spin animation */
+            margin: 20px auto; /* Center the loader */
+        }
+
+        /* Spin animation keyframes */
+        @keyframes spin {
+            0% { transform: rotate(0deg); } /* Initial state */
+            100% { transform: rotate(360deg); } /* Final state */
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container">
+        <h1>Booking Your Taxi...</h1>
+        <p>Please wait while we connect you with your driver.</p>
+        <div class="loader"></div>
+    </div>
+
+    <script>
+        // Simulate a delay for loading the driver acceptance
+        setTimeout(() => {
+            // Redirect to confirmation page after 3 seconds
+            window.location.href = "confirmation1.html";
+        }, 3000);
+    </script>
+</body>
+</html>

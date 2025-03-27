@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ride Service Page</title>
+    <link rel="stylesheet" href="stylesss.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align content to the left */
+            padding: 20px;
+        }
+
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align text and inputs to the left */
+            margin-bottom: 20px;
+            width: 100%; /* Ensure full width for better alignment */
+            position: relative; /* Position for suggestions */
+        }
+
+        .form-section label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            text-align: left; /* Align labels to the left */
+        }
+
+        .form-section input,
+        .form-section textarea {
+            width: 100%; /* Make input fields take full width */
+            max-width: 600px; /* Set a maximum width */
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        .suggestions {
+            border: 1px solid #ccc;
+            background-color: white;
+            position: absolute;
+            z-index: 1000;
+            width: calc(100% - 20px); /* Adjust width based on input */
+            max-height: 150px; /* Limit height */
+            overflow-y: auto; /* Enable scrolling if needed */
+            display: none; /* Initially hidden */
+        }
+
+        .suggestions div {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestions div:hover {
+            background-color: #f0f0f0; /* Highlight on hover */
+        }
+
+        .logo {
+            position: fixed;
+            top: 2px; /* Move logo to top-right corner */
+            right: 10px; /* Position to the right */
+            z-index: 10; /* Ensure it appears above other elements */
+        }
+
+        .logo img {
+            width: 150px; /* Maximize logo width */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 10%; /* Optional: give it rounded corners */
+        }
+
+        #confirmBtn {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #confirmBtn:disabled {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <!-- Boarding Section -->
+    <div class="form-section">
+        <label for="boarding" class="section-title">BOARDING:</label>
+        <input type="text" id="boarding" name="boarding" placeholder="Enter boarding location" autocomplete="off">
+        <div class="suggestions" id="boarding-suggestions"></div> <!-- Suggestions Container -->
+    </div>
+
+    <!-- Dropping Section -->
+    <div class="form-section">
+        <label for="dropping" class="section-title">DROPPING:</label>
+        <input type="text" id="dropping" name="dropping" placeholder="Enter dropping location" autocomplete="off">
+        <div class="suggestions" id="dropping-suggestions"></div> <!-- Suggestions Container -->
+    </div>
+
+    <!-- Message Section -->
+    <div class="form-section">
+        <label for="message" class="section-title">MESSAGE:</label>
+        <textarea id="message" name="message" rows="3" placeholder="Enter any additional details"></textarea>
+    </div>
+
+    <!-- Confirm Button Section -->
+    <div class="form-section">
+        <button type="button" id="confirmBtn" disabled>CONFIRM</button>
+    </div>
+
+    <!-- Logo at the top-right -->
+    <div class="logo">
+        <img src="rideable.png" alt="Ride Able Logo">
+    </div>
+    
+
+    <script>
+        // Sample location suggestions
+        const locations = [
+            "Erode, TamilNadu",
+            "Tiruppur, Tamil Nadu",
+            "Coimbatore, TamilNadu",
+            "Marudamalai Temple, Coimbatore, TamilNadu",
+            "VOC Park, Coimbatore, TamilNadu",
+            "Perur Pateeswarar Temple, Coimbatore, TamilNadu",
+            "Brookefields Mall, Coimbatore, TamilNadu",
+            "Codissia Trade Fair Complex, Coimbatore, TamilNadu",
+            "Gass Forest Museum, Coimbatore, TamilNadu",
+            "Black Thunder Water Park, Coimbatore, TamilNadu",
+            "Singanallur Lake, Coimbatore, TamilNadu",
+            "Sree Ayyappan Temple, Coimbatore, TamilNadu",
+            "Tidel Park Coimbatore, Coimbatore, TamilNadu",
+            "Kovai Kutralam Falls, Coimbatore, TamilNadu",
+            "Karaimadai, Coimbatore, TamilNadu",
+            "Puliakulam Vinayagar Temple, Coimbatore, TamilNadu",
+            "Peelamedu, Coimbatore, TamilNadu",
+            "Coimbatore Medical College, Coimbatore, TamilNadu",
+            "Sulur, Coimbatore, TamilNadu",
+            "KCT, Coimbatore, TamilNadu",
+            "Gandhipuram, Coimbatore, TamilNadu",
+            "Prozone Mall, Coimbatore, TamilNadu",
+            "Saravanampatti, Coimbatore, TamilNadu",
+            "Ganapathy, Coimbatore, TamilNadu",
+            "SNS College, Coimbatore, TamilNadu",
+            "KGIS College, Coimbatore, TamilNadu",
+            "Vivegam School, Coimbatore, TamilNadu",
+            "Singanallur Bus Stand, Coimbatore, TamilNadu"
+        ];
+
+        // Function to display suggestions based on input
+        function showSuggestions(inputId, suggestionsContainerId) {
+            const input = document.getElementById(inputId);
+            const suggestionsContainer = document.getElementById(suggestionsContainerId);
+            const value = input.value.toLowerCase();
+
+            // Filter locations based on input
+            const filteredLocations = locations.filter(location => location.toLowerCase().includes(value));
+            suggestionsContainer.innerHTML = ''; // Clear previous suggestions
+
+            // Show filtered suggestions
+            if (filteredLocations.length > 0 && value) {
+                suggestionsContainer.style.display = 'block';
+                filteredLocations.forEach(location => {
+                    const div = document.createElement('div');
+                    div.textContent = location;
+                    div.onclick = function() {
+                        input.value = location; // Set input value on click
+                        suggestionsContainer.style.display = 'none'; // Hide suggestions
+                    };
+                    suggestionsContainer.appendChild(div);
+                });
+            } else {
+                suggestionsContainer.style.display = 'none'; // Hide if no suggestions
+            }
+        }
+
+        // Add input event listeners to show suggestions
+        document.getElementById("boarding").addEventListener("input", function() {
+            showSuggestions("boarding", "boarding-suggestions");
+        });
+
+        document.getElementById("dropping").addEventListener("input", function() {
+            showSuggestions("dropping", "dropping-suggestions");
+        });
+
+        // Function to handle confirmation
+        document.getElementById("confirmBtn").addEventListener("click", function() {
+            const boarding = document.getElementById("boarding").value;
+            const dropping = document.getElementById("dropping").value;
+            const message = document.getElementById("message").value; // Get message input
+            
+            // Store values in local storage
+            localStorage.setItem("boardingLocation", boarding);
+            localStorage.setItem("droppingLocation", dropping);
+            localStorage.setItem("message", message); // Save message to local storage
+
+            // Redirect to confirmation page
+            window.location.href = "page51.html"; // Make sure this page exists
+        });
+
+        // Function to validate input fields
+        function validateInputs() {
+            const boarding = document.getElementById("boarding").value;
+            const dropping = document.getElementById("dropping").value;
+            const confirmBtn = document.getElementById("confirmBtn");
+
+            // Enable the confirm button only if both fields are filled
+            confirmBtn.disabled = !(boarding.trim() && dropping.trim());
+        }
+
+        // Add input event listeners to validate fields
+        document.getElementById("boarding").addEventListener("input", validateInputs);
+        document.getElementById("dropping").addEventListener("input", validateInputs);
+    </script>
+</body>
+</html>

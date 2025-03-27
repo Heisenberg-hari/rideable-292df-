@@ -1,0 +1,96 @@
+body {
+    font-family: Arial, sans-serif;
+    color: #000; /* Default text color */
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent scrollbars from appearing */
+    height: 100vh; /* Full viewport height */
+    background-color: #4ad6cf;  /* Gradient from dark blue to violet and purple */
+    background-size: 400% 400%; /* Make gradient larger for animation */
+    animation: gradientAnimation 15s ease infinite; /* Animation for gradient */
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.confirmation-container {
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+    padding: 150px; /* Keep padding at 150 */
+    width: 80%; /* Make the box wider */
+    max-width: 600px; /* Set maximum width */
+    margin: 50px auto; /* Center the container */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative; /* Make this container the reference for absolute positioning */
+}
+
+.header {
+    display: flex;
+    align-items: flex-start; /* Align items to the start (top) */
+    justify-content: flex-start; /* Align items to the start (left) */
+    margin-bottom: 20px; /* Space below header */
+}
+
+.header img {
+    width: 75px; /* Make the logo smaller */
+    height: auto; /* Maintain aspect ratio */
+    position: absolute; /* Position the logo absolutely */
+    top: 20px; /* Adjust top position */
+    left: 20px; /* Adjust left position for top left corner */
+}
+
+.locations,
+.pin-bill {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.locations div,
+.pin-bill div {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.locations div:last-child,
+.pin-bill div:last-child {
+    margin-right: 0;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* Space above buttons */
+}
+
+.call-button {
+    background-color: #008209; /* Indigo */
+    color: white;
+    border: none;
+    padding: 15px 20px; /* Increased button size */
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cancel-button {
+    background-color: #d01212; /* Dark Orchid */
+    color: white;
+    border: none;
+    padding: 15px 20px; /* Increased button size */
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.call-button:hover,
+.cancel-button:hover {
+    opacity: 0.8; /* Slightly transparent on hover */
+}

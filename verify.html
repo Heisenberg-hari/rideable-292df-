@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Verification</title>
+    <style>
+        /* Reset some default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f0f0;
+            animation: fadeIn 1s; /* Fade-in animation */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Main container for verification */
+        .verification-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px; /* Max width for better layout */
+            text-align: center;
+        }
+        .logo {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+    }
+
+    .logo img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for a floating effect */
+    }
+
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 2.5rem; /* Increased font size */
+        }
+
+        /* Form styles */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem; /* Space between form elements */
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            padding: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            background-color: #4caf50; /* Green background */
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
+        /* Terms and conditions text */
+        .terms {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+            text-align: left;
+        }
+
+        /* Message styles */
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            width: 100%;
+            display: none; /* Hidden by default */
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .action-buttons {
+            display: none; /* Hidden by default */
+            margin-top: 10px;
+        }
+
+        
+
+        /* Your existing styles */
+        /* ... */
+    </style>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+</head>
+<body>
+
+    <div class="verification-container">
+        <h1>Driver Verification</h1>
+        <form id="verificationForm">
+            <input type="text" id="fullName" placeholder="Full Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="text" id="phoneNumber" placeholder="Phone Number" required>
+            <input type="text" id="vehicleModel" placeholder="Vehicle Model" required>
+            <input type="text" id="vehicleReg" placeholder="Vehicle Registration" required>
+            <button type="submit">Verify Driver</button>
+        </form>
+        <p class="terms">By submitting, you agree to our <a href="#">terms and conditions</a>.</p>
+        
+        <div class="message" id="resultMessage"></div>
+        <div class="action-buttons">
+            <button id="retryBtn">Retry Upload</button>
+            <button id="contactSupportBtn">Contact Support</button>
+        </div>
+    </div>
+    <div class="logo">
+        <img src="rideable.png" alt="Ride Able Logo">
+      </div>
+    <script type="module">
+        // Firebase configuration
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDg__iFrc-vpB7eDxsM9iFKwtg5wopeQTY",
+            authDomain: "rideable-292df.firebaseapp.com",
+            projectId: "rideable-292df",
+            storageBucket: "rideable-292df.appspot.com",
+            messagingSenderId: "704762507977",
+            appId: "1:704762507977:web:87d4e539cce9010ef69318",
+            measurementId: "G-GH6FML64D0"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.getElementById('verificationForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get form data
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const vehicleModel = document.getElementById('vehicleModel').value;
+            const vehicleReg = document.getElementById('vehicleReg').value;
+            const resultMessage = document.getElementById('resultMessage');
+            const actionButtons = document.querySelector('.action-buttons');
+
+            try {
+                // Save driver information in Firebase Firestore
+                await addDoc(collection(db, "Driver"), {
+                    fullName,
+                    email,
+                    phoneNumber,
+                    vehicleModel,
+                    vehicleReg,
+                    timestamp: new Date() // Optional: To store the submission time
+                });
+
+                // Store driver information in local storage
+                const driverInfo = { fullName, email, phoneNumber, vehicleModel, vehicleReg };
+                localStorage.setItem('driverInfo', JSON.stringify(driverInfo));
+
+                resultMessage.textContent = "Verification Successful! Welcome, driver!";
+                resultMessage.className = "message success";
+                actionButtons.style.display = "none"; // Hide action buttons
+
+                // Redirect to the Driver Dashboard after a short delay
+                setTimeout(() => {
+                    window.location.href = 'driver.html'; // Update with actual verification logic
+                }, 2000);
+
+            } catch (error) {
+                // Show error message if saving fails
+                resultMessage.textContent = "Verification Failed: " + error.message;
+                resultMessage.className = "message error";
+                actionButtons.style.display = "block"; // Show action buttons
+            }
+
+            resultMessage.style.display = "block"; // Show the result message
+        });
+
+        // Retry upload function
+        document.getElementById('retryBtn').addEventListener('click', function() {
+            document.getElementById('verificationForm').reset(); // Clear the form
+            document.getElementById('resultMessage').style.display = "none"; // Hide the result message
+            this.parentElement.style.display = "none"; // Hide retry button container
+            document.getElementById('contactSupportBtn').style.display = "none"; // Hide contact support button
+        });
+
+        // Contact support function
+        document.getElementById('contactSupportBtn').addEventListener('click', function() {
+            alert('Redirecting to support page...');
+            // Here you would implement the logic to navigate to the support page
+            // window.location.href = 'support.html'; // Uncomment for redirection
+        });
+    </script>
+
+</body>
+</html>

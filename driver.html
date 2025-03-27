@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Dashboard</title>
+    <link rel="stylesheet" href="driver.css"> <!-- Link to the updated CSS file -->
+    <style>
+        /* Basic styling for the dashboard */
+        /* Your existing styles */
+        /* ... */
+    </style>
+</head>
+<body>
+
+    <!-- Main Driver Container -->
+    <div class="driver-container">
+
+        <!-- Header Section -->
+        <div class="header">
+            <h1>Driver Dashboard</h1>
+            <div class="logo-section">
+                <img src="rideable.png" alt="Company Logo">
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="dashboard">
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <a href="#ride-requests" class="active">Ride Requests</a>
+                <a href="#active-trips">Active Trips</a>
+                <a href="#profile">Profile</a>
+                <a href="#vehicle-management">Vehicle Management</a>
+            </div>
+
+            <!-- Content Section -->
+            <div class="content">
+
+                <!-- Ride Requests -->
+                <div id="ride-requests">
+                    <h2>New Ride Requests</h2>
+                    <!-- Existing ride requests -->
+                    <div class="ride-request">
+                        <div>
+                            <h3>Pick-up: Location A</h3>
+                            <p>Drop-off: Location B</p>
+                            <p>Estimated Time: 15 minutes</p>
+                        </div>
+                        <button class="accept-btn">Accept</button>
+                    </div>
+                    <div class="ride-request">
+                        <div>
+                            <h3>Pick-up: Location C</h3>
+                            <p>Drop-off: Location D</p>
+                            <p>Estimated Time: 20 minutes</p>
+                        </div>
+                        <button class="accept-btn">Accept</button>
+                    </div>
+                </div>
+
+                <!-- Active Trips -->
+                <div id="active-trips" class="status-section">
+                    <h2>Ongoing Trip</h2>
+                    <p>Pick-up: Location A</p>
+                    <p>Drop-off: Location B</p>
+                    <p>Status: In Progress</p>
+                    <button class="end-trip-btn">End Trip</button>
+                </div>
+
+                <!-- Profile Section -->
+                <div id="profile" class="profile-vehicle-section">
+                    <h2>Your Profile</h2>
+                    <div id="driverInfo"></div> <!-- Area to display driver information -->
+                    <h2>Update Profile</h2>
+                    <p>Manage your personal information here.</p>
+                    <input type="text" id="updateFullName" placeholder="Full Name" required>
+                    <input type="email" id="updateEmail" placeholder="Email" required>
+                    <input type="text" id="updatePhone" placeholder="Phone Number" required>
+                    <button class="update-btn" id="updateProfileBtn">Update Profile</button>
+                </div>
+
+                <!-- Vehicle Management Section -->
+                <div id="vehicle-management" class="profile-vehicle-section">
+                    <h2>Update Vehicle Information</h2>
+                    <p>Manage your vehicle details here.</p>
+                    <input type="text" id="updateVehicleModel" placeholder="Vehicle Model">
+                    <input type="text" id="updateVehicleReg" placeholder="Vehicle Registration">
+                    <button class="update-btn" id="updateVehicleBtn">Update Vehicle</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load driver information from local storage
+        window.onload = function () {
+            const driverInfo = JSON.parse(localStorage.getItem('driverInfo'));
+            const driverInfoDiv = document.getElementById('driverInfo');
+
+            if (driverInfo) {
+                driverInfoDiv.innerHTML = `
+                    <p><strong>Full Name:</strong> ${driverInfo.fullName}</p>
+                    <p><strong>Email:</strong> ${driverInfo.email}</p>
+                    <p><strong>Phone Number:</strong> ${driverInfo.phoneNumber}</p>
+                    <p><strong>Vehicle Model:</strong> ${driverInfo.vehicleModel}</p>
+                    <p><strong>Vehicle Registration:</strong> ${driverInfo.vehicleReg}</p>
+                `;
+            } else {
+                driverInfoDiv.innerHTML = `<p>No driver information available.</p>`;
+            }
+        };
+
+        // Update Profile Functionality
+        document.getElementById('updateProfileBtn').addEventListener('click', function () {
+            // Get updated values from inputs
+            const updatedFullName = document.getElementById('updateFullName').value;
+            const updatedEmail = document.getElementById('updateEmail').value;
+            const updatedPhone = document.getElementById('updatePhone').value;
+
+            // Save updated values to local storage
+            let driverInfo = JSON.parse(localStorage.getItem('driverInfo'));
+            if (driverInfo) {
+                driverInfo.fullName = updatedFullName || driverInfo.fullName;
+                driverInfo.email = updatedEmail || driverInfo.email;
+                driverInfo.phoneNumber = updatedPhone || driverInfo.phoneNumber;
+                localStorage.setItem('driverInfo', JSON.stringify(driverInfo));
+
+                // Reload the driver information to display updated data
+                window.onload();
+            }
+        });
+
+        // Update Vehicle Functionality
+        document.getElementById('updateVehicleBtn').addEventListener('click', function () {
+            // Get updated values from inputs
+            const updatedVehicleModel = document.getElementById('updateVehicleModel').value;
+            const updatedVehicleReg = document.getElementById('updateVehicleReg').value;
+
+            // Save updated values to local storage
+            let driverInfo = JSON.parse(localStorage.getItem('driverInfo'));
+            if (driverInfo) {
+                driverInfo.vehicleModel = updatedVehicleModel || driverInfo.vehicleModel;
+                driverInfo.vehicleReg = updatedVehicleReg || driverInfo.vehicleReg;
+                localStorage.setItem('driverInfo', JSON.stringify(driverInfo));
+
+                // Reload the driver information to display updated data
+                window.onload();
+            }
+        });
+    </script>
+</body>
+</html>

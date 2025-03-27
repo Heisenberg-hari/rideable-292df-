@@ -1,0 +1,134 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 10px;
+    height: 100vh; /* Full viewport height */
+    text-align: center; /* Center text */
+    display: flex; /* Use Flexbox for centering */
+    flex-direction: column; /* Align items in a column */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    color: rgb(0, 0, 0); /* Change text color for readability */
+    background-image:
+        url("ha.png"),
+        url("bak45.jpg"); /* First image */
+    background-size: cover, cover; /* Both images will cover the entire viewport */
+    background-position: -100% center, center; /* Start the first image off-screen to the left */
+    background-repeat: no-repeat, no-repeat; /* Prevent tiling for both */
+    animation: slide-background 4s forwards; /* Apply the slide background animation */
+}
+
+@keyframes slide-background {
+    0% {
+        background-position: -100% center, center; /* Start the first image off-screen to the left */
+    }
+    100% {
+        background-position: center, center; /* End position for the first image */
+    }
+}
+
+.form-section {
+    margin-bottom: 20px; /* Space between sections */
+    width: 100%; /* Full width for sections */
+    max-width: 400px; /* Limit max width */
+    margin-left: 200px; /* Slightly move form elements to the right */
+}
+
+.section-title {
+    display: block;
+    margin-bottom: 8px; /* Space between label and input */
+    font-weight: bold;
+}
+
+input[type="text"],
+textarea {
+    width: 100%; /* Full width */
+    padding: 10px; /* Inner spacing */
+    border: 1px solid #ccc; /* Border styling */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+button {
+    padding: 10px 15px; /* Button spacing */
+    background-color: #007BFF; /* Button color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.logo {
+    position: fixed; /* Fix position */
+    bottom: 550px; /* Distance from the bottom */
+    left: 20px; /* Distance from the left */
+    width: 150px; /* Set width for circular logo */
+    height: 150px; /* Set height for circular logo */
+    border-radius: 50%; /* Make it circular */
+    overflow: hidden; /* Hide overflow */
+}
+
+.logo img {
+    width: 100%; /* Scale image to fit the circular logo */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Style the switch container */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+/* Hide the default checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+/* The slider round button */
+.slider.round {
+    border-radius: 34px;
+}
+
+/* Before the round button */
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+/* Toggle switch when it's checked */
+input:checked + .slider {
+    background-color: #21f356;
+}
+
+/* Move the slider when checked */
+input:checked + .slider:before {
+    transform: translateX(26px);
+}

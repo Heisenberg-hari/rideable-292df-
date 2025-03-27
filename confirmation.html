@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="rideable.png"> <!-- Logo in the browser tab -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #CD853F; /* Solid background color */
+            color: #333; /* Default text color */
+            height: 100vh; /* Full viewport height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 600px; /* Limit maximum width */
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 75px; /* Logo size */
+            margin-right: 20px; /* Spacing between logo and title */
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin: 0;
+            color: #000; /* Header color */
+            font-weight: bold;
+            text-align: center; /* Center the header text */
+            flex-grow: 1; /* Allow the title to take available space */
+        }
+
+        .confirmation-details {
+            width: 100%;
+            max-width: 600px; /* Limit maximum width */
+            padding: 20px;
+            background-color: rgba(251, 251, 250, 0.9); /* Semi-transparent background */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: left; /* Align text to the left within the details */
+        }
+
+        .details {
+            margin-top: 20px;
+        }
+
+        .details p {
+            margin: 5px 0;
+            font-size: 16px; /* Font size for details */
+        }
+
+        .pin-bill {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            padding: 10px 20px; /* Equal padding for both buttons */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px; /* Font size for buttons */
+            flex: 1; /* Equal width for both buttons */
+            max-width: 150px; /* Max width to keep buttons reasonable */
+            margin: 0 5px; /* Space between buttons */
+        }
+
+        .call-button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }
+
+        .cancel-button {
+            background-color: #f44336; /* Red */
+            color: white;
+        }
+
+        .call-button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
+        .cancel-button:hover {
+            background-color: #e53935; /* Darker red on hover */
+        }
+
+        .selected-props-section {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="rideable.png" alt="Ride Able Logo" style="width: 75px; height: auto;"> <!-- Logo Size -->
+        </div>
+        <h1>Confirmation</h1>
+    </div>
+    <div class="confirmation-details">
+        <div class="details">
+            <p><strong>NAME:</strong> <span id="driverName">John Doe</span></p>
+            <p><strong>VEHICLE TYPE:</strong> <span id="vehicleType"></span></p>
+            <p><strong>SPECIFICATION:</strong> <span id="vehicleSpec"></span></p>
+            <p><strong>PICKUP:</strong> <span id="pickup"></span></p>
+            <p><strong>DROP:</strong> <span id="drop"></span></p>
+            <p><strong>ALONG WITH:</strong> <span id="alongWithDisplay"></span></p>
+            <p><strong>SELECTED PROPS:</strong> <span id="selectedPropsDisplay"></span></p>
+            <div class="pin-bill">
+                <div>
+                    <label for="pin">PIN:</label>
+                    <span id="pin" class="pin-display"></span>
+                </div>
+                <div>
+                    <label for="bill">BILL:</label>
+                    <span id="bill" class="bill-display"></span>
+                </div>
+                <div>
+                    <label for="tip">TIP:</label>
+                    <span id="tipDisplay"></span>
+                </div>
+            </div>
+        </div>
+        <div class="buttons">
+            <button class="call-button">CALL</button>
+            <button class="cancel-button">CANCEL RIDE</button>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import Firebase functions
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDg__iFrc-vpB7eDxsM9iFKwtg5wopeQTY",
+            authDomain: "rideable-292df.firebaseapp.com",
+            projectId: "rideable-292df",
+            storageBucket: "rideable-292df.appspot.com",
+            messagingSenderId: "704762507977",
+            appId: "1:704762507977:web:87d4e539cce9010ef69318",
+            measurementId: "G-GH6FML64D0"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Retrieve the "Along With" status from local storage
+        const alongWith = localStorage.getItem("alongWith");
+        document.getElementById('alongWithDisplay').textContent = alongWith === "true" ? "Yes" : "No";
+
+        // Function to generate a random 4-digit PIN
+        function generatePin() {
+            return Math.floor(1000 + Math.random() * 9000).toString();
+        }
+
+        // Function to calculate the bill based on vehicle type, distance, and tip
+        function calculateBill(vehicleType, distance, tip) {
+            let baseFare;
+            switch (vehicleType) {
+                case "Bike":
+                    baseFare = 50;
+                    break;
+                case "Car":
+                    baseFare = 150;
+                    break;
+                case "Auto":
+                    baseFare = 100;
+                    break;
+                case "Ambulance":
+                    baseFare = 200;
+                    break;
+                default:
+                    baseFare = 0;
+            }
+            const totalBill = (baseFare * distance + parseInt(tip)).toFixed(2);
+            return totalBill;
+        }
+
+        // Retrieve data from local storage
+        const boardingLocation = localStorage.getItem("boardingLocation");
+        const droppingLocation = localStorage.getItem("droppingLocation");
+        const driverName = localStorage.getItem("driverName") || "John Doe"; 
+        const vehicleType = localStorage.getItem("selectedVehicle") || "Car"; 
+        const distance = parseInt(localStorage.getItem("distance")) || 0; 
+        const message = localStorage.getItem("message") || "No additional specifications provided."; 
+        const tip = parseInt(localStorage.getItem("tip")) || 0; 
+        const pin = generatePin();
+        const billAmount = calculateBill(vehicleType, distance, tip);
+
+        // Retrieve the selected props from local storage
+        const selectedProps = JSON.parse(localStorage.getItem("selectedProps")) || [];
+
+        // Display the selected props
+        document.getElementById('selectedPropsDisplay').textContent = selectedProps.length > 0 ? selectedProps.join(", ") : "None";
+        
+        // Display the retrieved information
+        document.getElementById("pickup").textContent = boardingLocation || "Not specified";
+        document.getElementById("drop").textContent = droppingLocation || "Not specified";
+        document.getElementById("driverName").textContent = driverName;
+        document.getElementById("vehicleType").textContent = vehicleType;
+        document.getElementById("vehicleSpec").textContent = message; 
+        document.getElementById("pin").textContent = pin;
+        document.getElementById("bill").textContent = `₹${billAmount}`; 
+        document.getElementById("tipDisplay").textContent = `₹${tip}`;
+
+        // Function to save details to Firestore
+        async function saveDetails() {
+            try {
+                await addDoc(collection(db, 'caretaker'), {
+                    driverName: driverName,
+                    vehicleType: vehicleType,
+                    vehicleSpec: message,
+                    pickup: boardingLocation,
+                    drop: droppingLocation,
+                    alongWith: alongWith === "true" ? true : false,
+                    selectedProps: selectedProps,
+                    pin: pin,
+                    bill: billAmount,
+                    tip: tip,
+                    timestamp: new Date(),
+                });
+                console.log("Details saved to Firestore");
+            } catch (e) {
+                console.error("Error adding document: ", e);
+            }
+        }
+
+        // Call the saveDetails function when the page loads
+        window.onload = saveDetails;
+
+        document.querySelector('.cancel-button').addEventListener('click', function () {
+            window.location.href = "page6.html";
+        });
+
+        document.querySelector('.call-button').addEventListener('click', function () {
+            window.location.href = "call-page7.html";
+        });
+    </script>
+</body>
+</html>

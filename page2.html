@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page 2 - Location Permission</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #e0f7fa; /* Light blue background */
+        }
+
+        /* Logo at the top-left corner */
+        .logo {
+            position: absolute;
+            top: 50px; /* Increased space from the top */
+            left: 20px;
+            transition: transform 0.5s ease-in-out; /* Transition for the logo */
+            transform: translateY(-30px); /* Start above */
+            opacity: 0; /* Start invisible */
+        }
+
+        .logo img {
+            width: 180px; /* Slightly larger logo */
+            height: 180px; /* Adjusted size for better fit */
+            border-radius: 50%; /* Makes the logo circular */
+            object-fit: cover; /* Ensures the image fits within the circle without distortion */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow for depth */
+        }
+
+        /* Location permission warning */
+        .warning {
+            color: #e63946; /* Changed warning color for better visibility */
+            font-size: 2.5rem; /* Increased font size */
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Adds subtle shadow for depth */
+        }
+
+        /* Container for location options and buttons */
+        .location-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+            padding: 30px; /* Added padding */
+            border-radius: 12px; /* Rounded corners for container */
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white for the container */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Shadow for the container */
+            width: 90%; /* Container takes 90% width */
+            max-width: 600px; /* Max width for better layout on large screens */
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Transition for the location container */
+            transform: translateY(50px); /* Start below */
+            opacity: 0; /* Start invisible */
+        }
+
+        /* Location options */
+        .location-options {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        /* Each location choice */
+        .location-option {
+            text-align: center;
+            margin: 0 30px; /* Increased space between options */
+        }
+
+        /* Icons for location options */
+        .location-option img {
+            width: 100px; /* Adjusted for better fit */
+            height: 100px; /* Adjusted for better fit */
+            border-radius: 50%; /* Make the icons circular */
+            object-fit: cover;
+            transition: transform 0.2s; /* Smooth transform on hover */
+        }
+
+        .location-option img:hover {
+            transform: scale(1.1); /* Slight zoom effect on hover */
+        }
+
+        .location-option p {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            color: #333; /* Darker text color */
+        }
+
+        /* Buttons for Accept/Deny */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 20px; /* Added space above buttons */
+        }
+
+        .buttons button {
+            width: 180px; /* Reduced button width */
+            height: 50px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0 30px; /* Space between buttons */
+            transition: background-color 0.3s ease, transform 0.2s; /* Smooth transition */
+        }
+
+        .buttons button:hover {
+            transform: translateY(-2px); /* Lifts the button when hovered */
+        }
+
+        /* Specific style for Accept button */
+        .accept {
+            background-color: #4caf50; /* Green background */
+            color: white; /* White text */
+        }
+
+        .accept:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
+        /* Specific style for Deny button */
+        .deny {
+            background-color: #f44336; /* Red background */
+            color: white; /* White text */
+        }
+
+        .deny:hover {
+            background-color: #d32f2f; /* Darker red on hover */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Logo Section -->
+    <div class="logo">
+        <img src="rideable.png"  alt="Ride Able Logo">
+    </div>
+
+    <!-- Warning Text -->
+    <div class="warning">
+        LOCATION PERMISSION NOT ENABLED!
+    </div>
+
+    <!-- Location Options and Buttons -->
+    <div class="location-container">
+        <div class="location-options">
+            <div class="location-option">
+                <img src="precie.jpg" alt="Access to Location" />
+                <p>Precise Location</p>
+            </div>
+            <div class="location-option">
+                <img src="approxi.png" alt="Access to Location" />
+                <p>Approximate Location</p>
+            </div>
+        </div>
+        <div class="buttons">
+            <button class="accept" onclick="requestLocation()">Accept</button>
+            <button class="deny" onclick="denyLocation()">Deny</button>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function () {
+            // Animate logo and container when the page loads
+            const logo = document.querySelector('.logo');
+            logo.style.transform = 'translateY(0)';
+            logo.style.opacity = 1; // Fade in logo
+
+            const locationContainer = document.querySelector('.location-container');
+            locationContainer.style.transform = 'translateY(0)';
+            locationContainer.style.opacity = 1; // Fade in location container
+        };
+
+        function requestLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        // Location access granted, keep track of the location
+                        console.log('Location access granted'); // Silent log instead of alert
+                        // Redirect to the next page after accepting location
+                        window.location.href = "homepage.html"; // Replace with the actual next page URL
+                    },
+                    function() {
+                        // Handle location access denied
+                        alert('Location access denied! Please enable location access in your browser settings.');
+                    },
+                    {
+                        enableHighAccuracy: true, // Use high accuracy for location
+                        maximumAge: 30000, // Use a cached position if available
+                        timeout: 5000 // Wait up to 5 seconds for a position
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function denyLocation() {
+            // Redirect back to the login page after denying location
+            window.location.href = "login.html"; // Replace with the actual login page URL
+        }
+    </script>
+</body>
+</html>

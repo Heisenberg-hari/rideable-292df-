@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ride Service Selection</title>
+    <link rel="stylesheet" href="styleforpage5.css">
+    <style>
+        /* Add basic styling for the selected props section */
+        .selected-props-section {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .props-btn {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .props-btn.selected {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh; /* Ensure the container takes up the full viewport height */
+        }
+
+        .left-section, .right-section {
+            width: 50%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Adjust right-section */
+        .right-section {
+            height: 100vh; /* Ensure the height is the full viewport */
+            overflow-y: auto; /* Allow scrolling inside the right section */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to the top */
+            align-items: center; /* Center horizontally */
+        }
+
+        .ride-card {
+    display: flex;
+    flex-direction: row; /* Set items in a row (image on the left, text on the right) */
+    align-items: center; /* Vertically align items */
+    text-align: left; /* Align text to the left */
+    margin-bottom: 10px; /* Reduce margin to fit more content */
+    width: 95%; /* Reduce width of the container */
+    padding: 10px; /* Reduce padding */
+    border: 1px solid #ddd; /* Add border for better visibility */
+    border-radius: 5px; /* Slight rounding of corners */
+    background-color: #f9f9f9;
+    min-height: 135px; /* Set a minimum height */
+}
+
+.ride-card img {
+    width: 80px; /* Increase the size of the vehicle icon */
+    height: auto;
+    margin-right: 15px; /* Add space between the image and the text */
+}
+
+.ride-card h3 {
+    font-size: 16px; /* Slightly increase font size */
+    margin: 0; /* Remove top and bottom margins */
+}
+
+.ride-card p {
+    font-size: 12px; /* Keep the smaller font size for descriptions */
+    margin: 5px 0;
+}
+
+.ride-card label {
+    flex-grow: 1; /* Allow the label (containing text) to take up available space */
+}
+
+
+        /* Adjust form */
+        #vehicleForm {
+            width: 100%;
+        }
+
+        /* Adjust confirm button */
+        .confirm-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Section -->
+        <div class="left-section">
+            <!-- Logo -->
+            <div class="logo">
+                <img src="rideable.png" alt="Ride Able Logo">
+            </div>
+
+            <!-- Props Section with Buttons -->
+            <div class="props-section">
+                <h3>PROPS</h3>
+                <div class="props-buttons">
+                    <button id="wheelchair" class="props-btn">Wheelchair</button>
+                    <button id="stick" class="props-btn">Walking Stick/Canes</button>
+                    <button id="luggage" class="props-btn">Additional luggage</button>
+                    <button id="walker" class="props-btn">Walker</button>
+                    <button id="backpack" class="props-btn">Backpacks with Support Straps</button>
+                </div>
+            </div>
+
+            <!-- Tip Selection Section -->
+            <div class="tip-section">
+                <h3>TIP</h3>
+                <select id="tipSelect">
+                    <option value="20">₹20</option>
+                    <option value="30">₹30</option>
+                    <option value="50">₹50</option>
+                </select>
+            </div>
+
+            <!-- Confirm Button -->
+            <div class="confirm-button">
+                <button id="confirmBtn" disabled>CONFIRM</button>
+            </div>
+        </div>
+
+        <!-- Right Section -->
+        <div class="right-section">
+            <!-- Ride Options -->
+            <form id="vehicleForm">
+                <div class="ride-card">
+                    <input type="radio" id="bike" name="vehicle" value="Bike">
+                    <label for="bike">
+                        <img src="b.png" alt="Bike">
+                        <h3>BIKE</h3>
+                        <p>A bike designed for stability, low-clearance access, safety harnesses, flexible footrests, and shock absorbers.</p>
+                    </label>
+                </div>
+                <div class="ride-card">
+                    <input type="radio" id="car" name="vehicle" value="Car">
+                    <label for="car">
+                        <img src="car.png" alt="Car">
+                        <h3>CAR</h3>
+                        <p>Safe design for stability, wheelchair mounting, grab bars, low step-through access, harnesses, foldable footrests, seat cover, and shock absorbers.</p>
+                    </label>
+                </div>
+                <div class="ride-card">
+                    <input type="radio" id="auto" name="vehicle" value="Auto">
+                    <label for="auto">
+                        <img src="auto.png" alt="Auto">
+                        <h3>AUTO</h3>
+                        <p>For easy entry, a ramp for wheelchair access, shock-absorb wheelchair locking systems, and support straps with foldable footrests.</p>
+                    </label>
+                </div>
+                <div class="ride-card">
+                    <input type="radio" id="ambulance" name="vehicle" value="Ambulance">
+                    <label for="ambulance">
+                        <img src="ambulance.png" alt="Ambulance">
+                        <h3>AMBULANCE</h3>
+                        <p>An ambulance with wheelchair and stretcher access, secured systems, ramps, grab bars, and support mechanisms for medical transport.</p>
+                    </label>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Enable the confirm button only when a vehicle is selected
+        const vehicleForm = document.getElementById('vehicleForm');
+        const confirmBtn = document.getElementById('confirmBtn');
+        const selectedPropsDisplay = document.getElementById('selectedPropsDisplay');
+
+        vehicleForm.addEventListener('change', function() {
+            confirmBtn.disabled = !vehicleForm.querySelector('input[name="vehicle"]:checked');
+        });
+
+        // Function to update selected props display
+        function updateSelectedProps() {
+            const selectedProps = Array.from(document.querySelectorAll('.props-btn.selected'))
+                .map(button => button.textContent); // Get the text content of selected props
+            
+            selectedPropsDisplay.textContent = selectedProps.length > 0 ? selectedProps.join(", ") : "None";
+        }
+
+        // Attach click event to props buttons
+        document.querySelectorAll('.props-btn').forEach((button) => {
+            button.addEventListener('click', function() {
+                button.classList.toggle('selected');
+                updateSelectedProps();
+            });
+        });
+
+        confirmBtn.addEventListener('click', function() {
+            const selectedVehicle = vehicleForm.querySelector('input[name="vehicle"]:checked').value;
+            const selectedProps = Array.from(document.querySelectorAll('.props-btn.selected'))
+                .map(button => button.textContent); // Get the text content of selected props
+            const selectedTip = document.getElementById('tipSelect').value;
+
+            // Store selected data in localStorage
+            localStorage.setItem("selectedVehicle", selectedVehicle);
+            localStorage.setItem("selectedProps", JSON.stringify(selectedProps)); // Store props as JSON string
+            localStorage.setItem("tip", selectedTip); // Store selected tip
+            
+            // Redirect to confirmation page
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

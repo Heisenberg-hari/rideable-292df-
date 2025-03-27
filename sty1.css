@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: linear-gradient(135deg, #8B4513, #A0522D, #D2691E, #CD853F, #8B4513); 
+    background-size: cover;
+    margin: 0;
+    padding: 20px;
+    color: rgb(0, 0, 0);
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+}
+
+.taxi-list {
+    display: grid; /* Use grid layout */
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 20px; /* Space between grid items */
+    margin: 20px auto; /* Centering the list */
+}
+
+.taxi-item {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: white;
+    text-align: left; /* Align text to the left for better readability */
+}
+
+button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 15px;
+    background-color: #38a169;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2f8a5a;
+}

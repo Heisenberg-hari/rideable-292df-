@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ride Cancelled</title>
+    <style>
+        /* Body styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff; /* Dark background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #ffffff;
+        }
+
+        /* Left-side panel */
+        .left-side {
+    background-color: #d9100c; /* Red color for left-side panel */
+    width: 35%; /* Adjust width for balance */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 125px; /* Add a border radius to smooth the edges */
+    margin: 0 0 0 -100px; /* Move the container to the left */
+
+}
+.left-side img {
+    width: 150px;
+    height: auto;
+    margin: 0px 0 0 388px; /* Adjust this for positioning the logo */
+}
+
+
+        .left-side h2 {
+    color: #ffffff;
+    font-size: 28px;
+    position: absolute; /* Set the position to absolute */
+    top: 330px; /* Move the text down */
+    left: 20px; /* Move the text to the left */
+    font-weight: 700;
+}
+
+
+        /* Right-side panel */
+        .right-side {
+            padding: 50px; /* More padding for better spacing */
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .right-side h1 {
+            color: #e53935; /* Red color for "Ride Cancelled" */
+            font-size: 60px; /* Larger font size */
+            margin-bottom: 30px;
+            font-weight: 800;
+        }
+
+        /* Sad face container */
+        .sad-face {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #e53935;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: bounce 1.5s infinite ease-in-out; /* Apply bounce animation */
+        }
+
+        /* Eyes */
+        .eye {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            top: 40px;
+        }
+
+        .eye.left {
+            left: 40px;
+        }
+
+        .eye.right {
+            right: 40px;
+        }
+
+        /* Mouth */
+        .mouth {
+            position: absolute;
+            width: 80px;
+            height: 50px;
+            border-bottom: 5px solid white;
+            border-radius: 0 0 50px 50px;
+            top: 80px;
+            transform: rotate(180deg);
+        }
+
+        /* Bounce animation for the whole face */
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0); /* Start/end at normal position */
+            }
+            50% {
+                transform: translateY(-20px); /* Bounce up slightly */
+            }
+        }
+
+        .right-side p {
+            font-size: 20px;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        /* Button styles */
+        .button-container {
+            margin-top: 30px; /* Space above buttons */
+        }
+
+        .button {
+            background-color: #e53935; /* Red background */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px; /* Space between buttons */
+        }
+
+        .button:hover {
+            opacity: 0.8; /* Slightly transparent on hover */
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .left-side {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .right-side {
+                padding: 30px;
+            }
+
+            .right-side h1 {
+                font-size: 40px;
+            }
+
+            .sad-face {
+                width: 100px;
+                height: 100px;
+            }
+
+            .eye {
+                width: 15px;
+                height: 15px;
+            }
+
+            .mouth {
+                width: 60px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Left-side Panel -->
+    <div class="left-side">
+        <img src="rideable.png" alt="Ride Able Logo">
+        <h2>Ride Able</h2>
+    </div>
+
+    <!-- Right-side Panel -->
+    <div class="right-side">
+        <h1>RIDE CANCELLED!</h1>
+        <div class="sad-face">
+            <div class="eye left"></div>
+            <div class="eye right"></div>
+            <div class="mouth"></div>
+        </div>
+        <p>We're sorry that you had to cancel your ride. If you need any assistance, please contact support.</p>
+
+        <!-- Button container for Back and Home buttons -->
+        <div class="button-container">
+            <button class="button" onclick="goBack()">Back</button>
+            <button class="button" onclick="goHome()">Home</button>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            // Go back to the previous page
+            window.history.back();
+        }
+
+        function goHome() {
+            // Redirect to home page
+            window.location.href = "homepage.html"; // Adjust the path to your home page
+        }
+    </script>
+</body>
+</html>

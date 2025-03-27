@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Taxis</title>
+    <link rel="stylesheet" href="sty1.css">
+</head>
+<body>
+    <h1>Available Taxi Near You</h1>
+    <div class="taxi-list">
+        <div class="taxi-item" data-distance="2.5">
+            <p>Santhiya Kumar U</p>
+            <p>Ph.No: +91 987456214</p>
+            <p>(Away by 2.5 km)</p>
+            <button onclick="bookTaxi('Santhiya Kumar U')">Book Now</button>
+        </div>
+        <div class="taxi-item" data-distance="2.7">
+            <p>Madhan Sanja T</p>
+            <p>Ph.No: +91 874234156</p>
+            <p>(Away by 2.7 km)</p>
+            <button onclick="bookTaxi('Madhan Sanja T')">Book Now</button>
+        </div>
+        <div class="taxi-item" data-distance="3">
+            <p>Aleem Heisenger</p>
+            <p>Ph.No: +91 914579329</p>
+            <p>(Away by 3 km)</p>
+            <button onclick="bookTaxi('Aleem Heisenger')">Book Now</button>
+        </div>
+        <div class="taxi-item" data-distance="3.2">
+            <p>Priya Menon</p>
+            <p>Ph.No: +91 987654321</p>
+            <p>(Away by 3.2 km)</p>
+            <button onclick="bookTaxi('Priya Menon')">Book Now</button>
+        </div>
+        <div class="taxi-item" data-distance="3.5">
+            <p>Rahul Desai</p>
+            <p>Ph.No: +91 876543210</p>
+            <p>(Away by 3.5 km)</p>
+            <button onclick="bookTaxi('Rahul Desai')">Book Now</button>
+        </div>
+        <div class="taxi-item" data-distance="4.0">
+            <p>Sita Varma</p>
+            <p>Ph.No: +91 123456789</p>
+            <p>(Away by 4.0 km)</p>
+            <button onclick="bookTaxi('Sita Varma')">Book Now</button>
+        </div>
+    </div>
+
+    <script>
+        function bookTaxi(driverName) {
+            const distance = parseFloat(event.target.parentNode.getAttribute('data-distance'));
+            localStorage.setItem("driverName", driverName);
+            localStorage.setItem("distance", distance);
+            window.location.href = "loading.html";
+        }
+    </script>
+</body>
+</html>
